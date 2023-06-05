@@ -69,6 +69,11 @@ class FileMerger
         {  
             string altChunkId = "AltChunkId1";  
             MainDocumentPart mainPart = myDoc.MainDocumentPart;  
+            if (setPageBreaks) {
+                mainPart.Document.Body.InsertAfterSelf(new Paragraph(
+                                                        new Run(
+                                                            new Break { Type = BreakValues.Page })));
+            }
             AlternativeFormatImportPart chunk =   
                 mainPart.AddAlternativeFormatImportPart(  
                 AlternativeFormatImportPartType.WordprocessingML, altChunkId);  
