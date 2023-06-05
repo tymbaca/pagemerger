@@ -26,7 +26,7 @@ class Program
             File.Delete(o.OutputFilename);
             var merger = new FileMerger(o.OutputFilename, o.Filenames, o.SetPageBreaks);
             // merger.MergeFiles();
-            merger.MergeTwoDocs(o.Filenames.ElementAt(0), o.Filenames.ElementAt(1));
+            merger.MergeFiles();
         });
     }
 }
@@ -47,31 +47,22 @@ class FileMerger
         this.outputFilename = outputFilename;
     }
 
-    // public void MergeFiles()
-    // {
-    //     File.Delete(outputFilename);
-    //     File.Copy(filenames.ElementAt(0), outputFilename);
-    //     WordprocessingDocument mainDoc = WordprocessingDocument.Open(outputFilename, true);
-    //     for (int i = 1; i < filenames.Count(); i++)
-    //     {
-    //         // var altChunkId = $"altChunk{i}";
-    //         WordprocessingDocument tailDoc = WordprocessingDocument.Open(filenames.ElementAt(i), true);
-    //         mergeTwoDocs(mainDoc, tailDoc);
-    //     }
-    // }
-    
-    public void MergeTwoDocs(string headFilename, string tailFilename)
+    public void MergeFiles()
     {
-        if (setPageBreaks) 
-        {   
-            insertPageBreakToEndOfFile(headFilename);
+        File.Delete(outputFilename);
+        File.Copy(filenames.ElementAt(0), outputFilename);
+        for (int i = 1; i < filenames.Count(); i++)
+        {
+            insertPageBreakToEndOfFile(outputFilename);
+            AppendDocToDoc(outputFilename, filenames.ElementAt(i));
         }
-        File.Delete(this.outputFilename);  
-        File.Copy(headFilename, outputFilename);  
-        using (WordprocessingDocument myDoc =  
-            WordprocessingDocument.Open(outputFilename, true))  
+    }
+    
+    public void AppendDocToDoc(string targetFilename, string tailFilename)
+    {
+        using (WordprocessingDocument myDoc = WordprocessingDocument.Open(targetFilename, true))  
         {  
-            string altChunkId = "AltChunkId1";  
+            string altChunkId = "_" + Guid.NewGuid().ToString("d");  
             MainDocumentPart mainPart = myDoc.MainDocumentPart;  
             // if (setPageBreaks) {
             //     mainPart.Document.Body.InsertAfterSelf(new Paragraph(
