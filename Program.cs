@@ -24,8 +24,9 @@ class Program
         Parser.Default.ParseArguments<Options>(args).WithParsed<Options>(o => {
             // Console.Write(String.Join(", ", o.filenames));
             File.Delete(o.OutputFilename);
-            var merger = new FileMerger(o.Filenames, o.OutputFilename, o.SetPageBreaks);
-            merger.MergeFiles();
+            var merger = new FileMerger(o.OutputFilename, o.Filenames, o.SetPageBreaks);
+            // merger.MergeFiles();
+            merger.MergeTwoDocs(o.Filenames.ElementAt(0), o.Filenames.ElementAt(1));
         });
     }
 }
@@ -36,7 +37,7 @@ class FileMerger
     private string outputFilename;
     private bool setPageBreaks;
 
-    public FileMerger(IEnumerable<string> filenames, string outputFilename, bool setPageBreaks = false)
+    public FileMerger(string outputFilename, IEnumerable<string> filenames, bool setPageBreaks = false)
     {   
         if (filenames.Count() < 2) {
             throw new ArgumentException("Specified less then 2 files. Add 2 or more filenames.");
@@ -46,35 +47,32 @@ class FileMerger
         this.outputFilename = outputFilename;
     }
 
-    public void MergeFiles()
-    {
-        File.Delete(outputFilename);
-        File.Copy(filenames.ElementAt(0), outputFilename);
-        WordprocessingDocument mainDoc = WordprocessingDocument.Open(outputFilename, true);
-        for (int i = 1; i < filenames.Count(); i++)
-        {
-            // var altChunkId = $"altChunk{i}";
-            WordprocessingDocument tailDoc = WordprocessingDocument.Open(filenames.ElementAt(i), true);
-            mergeTwoDocs(mainDoc, tailDoc);
-        }
-    }
+    // public void MergeFiles()
+    // {
+    //     File.Delete(outputFilename);
+    //     File.Copy(filenames.ElementAt(0), outputFilename);
+    //     WordprocessingDocument mainDoc = WordprocessingDocument.Open(outputFilename, true);
+    //     for (int i = 1; i < filenames.Count(); i++)
+    //     {
+    //         // var altChunkId = $"altChunk{i}";
+    //         WordprocessingDocument tailDoc = WordprocessingDocument.Open(filenames.ElementAt(i), true);
+    //         mergeTwoDocs(mainDoc, tailDoc);
+    //     }
+    // }
     
-    private void mergeTwoDocs(WordprocessingDocument mainDoc, WordprocessingDocument tailDoc)
+    public void MergeTwoDocs(string headFilename, string tailFilename)
     {
-        string fileName1 = @"c:\Users\Public\Documents\Destination.docx";  
-        string fileName2 = @"c:\Users\Public\Documents\Source.docx";  
-        string testFile = @"c:\Users\Public\Documents\Test.docx";  
-        File.Delete(outputFilename);  
-        File.Copy(testFile, fileName1);  
+        File.Delete(this.outputFilename);  
+        File.Copy(headFilename, outputFilename);  
         using (WordprocessingDocument myDoc =  
-            WordprocessingDocument.Open(fileName1, true))  
+            WordprocessingDocument.Open(outputFilename, true))  
         {  
             string altChunkId = "AltChunkId1";  
             MainDocumentPart mainPart = myDoc.MainDocumentPart;  
             AlternativeFormatImportPart chunk =   
                 mainPart.AddAlternativeFormatImportPart(  
                 AlternativeFormatImportPartType.WordprocessingML, altChunkId);  
-            using (FileStream fileStream = File.Open(fileName2, FileMode.Open))  
+            using (FileStream fileStream = File.Open(tailFilename, FileMode.Open))  
                 chunk.FeedData(fileStream);  
             AltChunk altChunk = new AltChunk();  
             altChunk.Id = altChunkId;  
