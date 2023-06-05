@@ -61,22 +61,30 @@ class FileMerger
     
     private void mergeTwoDocs(WordprocessingDocument mainDoc, WordprocessingDocument tailDoc)
     {
-        var mainPart = mainDoc.MainDocumentPart;
-        var tailPart = tailDoc.MainDocumentPart;
-        string altChunkId = "_" + Guid.NewGuid().ToString("d");  // Example: _ba42c172-b48f-48a1-8e31-d0e22deb94ab
-        if (setPageBreaks) {
-            mainPart.Document.Body.InsertAfterSelf(new Paragraph(
-                                                    new Run(
-                                                        new Break { Type = BreakValues.Page })));
+        string fileName1 = @"c:\Users\Public\Documents\Destination.docx";  
+        string fileName2 = @"c:\Users\Public\Documents\Source.docx";  
+        string testFile = @"c:\Users\Public\Documents\Test.docx";  
+        File.Delete(outputFilename);  
+        File.Copy(testFile, fileName1);  
+        using (WordprocessingDocument myDoc =  
+            WordprocessingDocument.Open(fileName1, true))  
+        {  
+            string altChunkId = "AltChunkId1";  
+            MainDocumentPart mainPart = myDoc.MainDocumentPart;  
+            AlternativeFormatImportPart chunk =   
+                mainPart.AddAlternativeFormatImportPart(  
+                AlternativeFormatImportPartType.WordprocessingML, altChunkId);  
+            using (FileStream fileStream = File.Open(fileName2, FileMode.Open))  
+                chunk.FeedData(fileStream);  
+            AltChunk altChunk = new AltChunk();  
+            altChunk.Id = altChunkId;  
+            mainPart.Document  
+                .Body  
+                .InsertAfter(altChunk, mainPart.Document.Body  
+                .Elements<Paragraph>().Last());  
+            mainPart.Document.Save();  
         }
-        AlternativeFormatImportPart chunk = mainPart.AddAlternativeFormatImportPart(AlternativeFormatImportPartType.WordprocessingML, altChunkId);
-        chunk.FeedData(tailPart.GetStream());
-        AltChunk altChunk = new AltChunk();
-        altChunk.Id = altChunkId;
-        mainPart.Document.Body.InsertAfter(altChunk, mainPart.Document.Body.Elements<Paragraph>().Last());
-        mainPart.Document.Save();
     }
-
 }
 // WordprocessingDocument.Open("template.docx", true);
 
