@@ -62,6 +62,10 @@ class FileMerger
     
     public void MergeTwoDocs(string headFilename, string tailFilename)
     {
+        if (setPageBreaks) 
+        {   
+            insertPageBreakToEndOfFile(headFilename);
+        }
         File.Delete(this.outputFilename);  
         File.Copy(headFilename, outputFilename);  
         using (WordprocessingDocument myDoc =  
@@ -69,11 +73,11 @@ class FileMerger
         {  
             string altChunkId = "AltChunkId1";  
             MainDocumentPart mainPart = myDoc.MainDocumentPart;  
-            if (setPageBreaks) {
-                mainPart.Document.Body.InsertAfterSelf(new Paragraph(
-                                                        new Run(
-                                                            new Break { Type = BreakValues.Page })));
-            }
+            // if (setPageBreaks) {
+            //     mainPart.Document.Body.InsertAfterSelf(new Paragraph(
+            //                                             new Run(
+            //                                                 new Break { Type = BreakValues.Page })));
+            // }
             AlternativeFormatImportPart chunk =   
                 mainPart.AddAlternativeFormatImportPart(  
                 AlternativeFormatImportPartType.WordprocessingML, altChunkId);  
@@ -81,12 +85,24 @@ class FileMerger
                 chunk.FeedData(fileStream);  
             AltChunk altChunk = new AltChunk();  
             altChunk.Id = altChunkId;  
-            mainPart.Document  
-                .Body  
+            mainPart.Document.Body  
                 .InsertAfter(altChunk, mainPart.Document.Body  
-                .Elements<Paragraph>().Last());  
+                    .Elements<Paragraph>().Last());  
             mainPart.Document.Save();  
         }
+    }
+
+    private void insertPageBreakToEndOfFile (string filename) 
+    {
+        WordprocessingDocument doc = WordprocessingDocument.Open(filename, true);
+        MainDocumentPart mainPart = doc.MainDocumentPart;
+        var pageBreak = new Paragraph(
+                            new Run(
+                                new Break { Type = BreakValues.Page }));
+        mainPart.Document.Body.InsertAfter(pageBreak, mainPart.Document.Body  
+                    .Elements<Paragraph>().Last());
+        doc.Save();
+        doc.Close();
     }
 }
 // WordprocessingDocument.Open("template.docx", true);
