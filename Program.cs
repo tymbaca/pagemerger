@@ -1,4 +1,4 @@
-﻿// See https://aka.ms/new-console-template for more information
+// See https://aka.ms/new-console-template for more information
 using System.Linq;
 using System.IO;
 using DocumentFormat.OpenXml.Packaging;
@@ -53,7 +53,10 @@ class FileMerger
         File.Copy(filenames.ElementAt(0), outputFilename);
         for (int i = 1; i < filenames.Count(); i++)
         {
-            insertPageBreakToEndOfFile(outputFilename);
+            if (setPageBreaks)
+            {
+                insertPageBreakToEndOfFile(outputFilename);
+            }
             AppendDocToDoc(outputFilename, filenames.ElementAt(i));
         }
     }
