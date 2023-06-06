@@ -9,10 +9,10 @@ class Program
 {
     public class Options
     {
-        [Value(0, HelpText = "Name of the output file.", MetaName = "Output")]
+        [Value(0, Required = true, HelpText = "Name of the output file.", MetaName = "Output")]
         public string OutputFilename { set; get; }
 
-        [Value(1, Min = 2, HelpText = "Names of files that need to be merged.", MetaName = "Filenames")]
+        [Value(1, Required = true, Min = 2, HelpText = "Names of files that need to be merged.", MetaName = "Filenames")]
         public IEnumerable<string> Filenames { set; get; }
 
         [Option('b', "set-page-breaks", Required = false, HelpText = "Set page breaks between each file.")]
