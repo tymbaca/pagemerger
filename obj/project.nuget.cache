@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "WL6PzZiiwTudfnyWcSETQkLZO6tlKMgVL+AGoRuW482lF4HLH2+ddQZ6wOy+b3ROxqbSkn/ffFS2mdHnYC07ig==",
+  "dgSpecHash": "MmXuxfkUpUF6z28WGVjTjiTVieyyUchtkPAdIo95BFZU+QjvF/d5HYP3o5+eVC9PiJLC1DIOJ+RZ1lUvjQHzVQ==",
   "success": true,
-  "projectFilePath": "/Users/tymbaca/code/Projects/PageMerger/PageMerger.csproj",
+  "projectFilePath": "/Users/tymbaca/code/Projects/pagemerger/pagemerger.csproj",
   "expectedPackageFiles": [
     "/Users/tymbaca/.nuget/packages/commandlineparser/2.9.1/commandlineparser.2.9.1.nupkg.sha512",
     "/Users/tymbaca/.nuget/packages/microsoft.netcore.platforms/1.1.0/microsoft.netcore.platforms.1.1.0.nupkg.sha512",

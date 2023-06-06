@@ -5071,11 +5071,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "/Users/tymbaca/code/Projects/PageMerger/PageMerger.csproj",
-      "projectName": "PageMerger",
-      "projectPath": "/Users/tymbaca/code/Projects/PageMerger/PageMerger.csproj",
+      "projectUniqueName": "/Users/tymbaca/code/Projects/pagemerger/pagemerger.csproj",
+      "projectName": "pagemerger",
+      "projectPath": "/Users/tymbaca/code/Projects/pagemerger/pagemerger.csproj",
       "packagesPath": "/Users/tymbaca/.nuget/packages/",
-      "outputPath": "/Users/tymbaca/code/Projects/PageMerger/obj/",
+      "outputPath": "/Users/tymbaca/code/Projects/pagemerger/obj/",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "/Users/tymbaca/Library/Application Support/Godot/mono/GodotNuGetFallbackFolder"
