@@ -1,4 +1,4 @@
-// See https://aka.ms/new-console-template for more information
+﻿// See https://aka.ms/new-console-template for more information
 using System.Linq;
 using System.IO;
 using DocumentFormat.OpenXml.Packaging;
@@ -93,9 +93,19 @@ class FileMerger
         var pageBreak = new Paragraph(
                             new Run(
                                 new Break { Type = BreakValues.Page }));
-        mainPart.Document.Body.InsertAfter(pageBreak, mainPart.Document.Body  
-                    .Elements<Paragraph>().Last());
-        doc.Save();
+
+        // Chose in which file to add pagebreak depending on is there already embeded files or not
+        if (mainPart.AlternativeFormatImportParts.Count() == 0)
+        {
+            mainPart.Document.Body.InsertAfter(pageBreak, mainPart.Document.Body  
+                        .Elements<Paragraph>().Last());
+        } else {
+            WordprocessingDocument externalDoc = WordprocessingDocument.Open(mainPart.AlternativeFormatImportParts.Last().GetStream(), true);
+            var externalMainPart = externalDoc.MainDocumentPart;
+            externalMainPart.Document.Body.InsertAfter(pageBreak, externalMainPart.Document.Body  
+                        .Elements<Paragraph>().Last());
+            externalDoc.Close();
+        }
         doc.Close();
     }
 }
