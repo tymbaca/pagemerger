@@ -1,6 +1,0 @@
-.gitignore
-*.docx
-obj/**
-bin/**
-publish/**
-.vscode**
