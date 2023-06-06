@@ -81,7 +81,7 @@ class FileMerger
             altChunk.Id = altChunkId;  
             mainPart.Document.Body  
                 .InsertAfter(altChunk, mainPart.Document.Body  
-                    .Elements<Paragraph>().Last());  
+                    .Elements().Last());  
             mainPart.Document.Save();  
         }
     }
