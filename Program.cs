@@ -21,13 +21,18 @@ class Program
 
     static public void Main(string[] args)
     {
-        Parser.Default.ParseArguments<Options>(args).WithParsed<Options>(o => {
+        var parseResult = Parser.Default.ParseArguments<Options>(args).WithParsed<Options>(o => {
             // Console.Write(String.Join(", ", o.filenames));
             File.Delete(o.OutputFilename);
             var merger = new FileMerger(o.OutputFilename, o.Filenames, o.SetPageBreaks);
             // merger.MergeFiles();
             merger.MergeFiles();
         });
+        if (parseResult.Errors.Count() == 0) {
+            Environment.Exit(0);
+        } else {
+            Environment.Exit(1);
+        }
     }
 }
 
