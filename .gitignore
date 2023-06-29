@@ -1,0 +1,6 @@
+bin
+obj
+*.docx
+
+# locale
+.vscode
