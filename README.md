@@ -8,6 +8,17 @@ git clone https://github.com/tymbaca/pagemerger.git
 
 ## Build
 
+### tl;dr
+```sh
+git clone https://github.com/tymbaca/pagemerger.git
+cd pagemerger 
+dotnet add package DocumentFormat.OpenXml --version 2.20.0
+dotnet add package CommandLineParser --version 2.9.1
+dotnet publish -o ./result -p:PublishSingleFile=true --self-contained false
+cd result
+sudo mv pagemerger /usr/local/bin
+```
+
 > For build make sure you have those dependancies:
 > - [.NET](https://dotnet.microsoft.com/en-us/download) (7 and later)
 > - .NET packages:
