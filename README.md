@@ -19,7 +19,7 @@ cd result
 sudo mv pagemerger /usr/local/bin
 ```
 
-> For build make sure you have those dependancies:
+> For build make sure you have those dependencies:
 > - [.NET](https://dotnet.microsoft.com/en-us/download) (7 and later)
 > - .NET packages:
 >   - [CommandLineParser](https://github.com/commandlineparser/commandline) (2.9.1 and later)
